@@ -1,0 +1,45 @@
+## Interface: 120000,120001
+## Title: SandBars
+## Notes: A simple addon. 
+##
+## Feature List
+## --------------- 
+## Hides default unit frames
+## Hides Quest Objecties unless mouse over
+## Very basic Player and target Castbars
+## Unit Frames: target, targettarget, player, pet, focus
+## player unit shows power levels
+## units show name
+## units show classification (elete etc)
+## units show level if higher than player
+## units show raid markers
+## by default mouse_2, shift_mouse_2 on unit to show unit popup menu
+## by default mouse_1, shift_mouse_1 on unit selects that unit (target and focus are switched is a focus existed, otherwise target clears, quirk of the macro)
+## shift mouse 1&2 behave same as default unmodifed clicks
+## ctrl-mouse 1 on unit clears the unit, pet dismissd
+## ctrl-mouse 2 on unit opens popup meny
+## ctrl mouse 1&2 on player unit calls/revives the pet
+## left click focus - i use a macro to switch focus and target. can be changed in character macro file
+## macros for all units on left click , right click -- thinking of expanding to additional mouse buttons 3 4 and 5
+## macros in seperate lua file, one file per character
+## ------------------
+##
+## To do
+## --- macros would be better in a database and config UI, some other time
+## --- make movable in ui. drag drop
+
+Config.lua
+lib/ToolBag.lua
+lib/Frame.lua
+lib/RaidIcon.lua
+lib/CastBar.lua
+lib/HealthBar.lua
+lib/PowerColour.lua
+lib/PowerBar.lua
+lib/Macro.lua
+ui/OjectiveTracker.lua
+ui/DefautUnitFrames.lua
+macros/Ghowler.lua
+macros/Sandina.lua
+lib/Activity.lua
+SandBars.lua
