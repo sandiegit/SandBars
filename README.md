@@ -1,5 +1,3 @@
-<> markdown 
-
 # SandBars
 
 I created this addon for my own use.
