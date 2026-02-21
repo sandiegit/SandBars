@@ -1,3 +1,5 @@
+-- SandBars: Frame create with custom functions
+
 function NewFrame(frameType, frameName, parent, template)
     local frame = CreateFrame(frameType or "Frame", frameName, parent, template)
     function frame:SafeHide()

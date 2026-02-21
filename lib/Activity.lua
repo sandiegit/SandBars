@@ -1,3 +1,5 @@
+-- SandBars: User activity
+
 local active = 0
 local timeStamp = GetTimePreciseSec()
 local delay = config.inactiveDelay
