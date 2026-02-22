@@ -37,9 +37,8 @@ lib/HealthBar.lua
 lib/PowerColour.lua
 lib/PowerBar.lua
 lib/Macro.lua
+lib/Activity.lua
 ui/OjectiveTracker.lua
 ui/DefautUnitFrames.lua
-macros/Ghowler.lua
-macros/Sandina.lua
-lib/Activity.lua
+ToonMacros.lua
 SandBars.lua

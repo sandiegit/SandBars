@@ -1,78 +1,136 @@
 -- SandBars: Assign Macros
 
-macroDB = {}
-function macroDB:New(name)
-  self[name] = { target = {}, targettarget = {}, pet = {}, player = {}, focus={}}
-  return self[name]
+macroDB = {  }
+
+
+function trim_multiline(input)
+    return input:gsub("^[ \t]+", ""):gsub("\n[ \t]+", "\n")
 end
-function macroDB:Get(player, unit, index)
-  if self[player] and self[player][unit] and self[player][unit][index] then
-    return self[player][unit][index]
+
+local function GetMacro(player,unit,mouse)
+  if macroDB[player] and macroDB[player][unit] and macroDB[player][unit][mouse] then 
+    return trim_multiline(macroDB[player][unit][mouse])
   else
-    return nil
+    return ""
   end
 end
+
 local swapFocusTarget = [[
-/target focus
-/targetlasttarget
-/focus target
+/target [@focus,exists] focus
+/targetlasttarget [@focus,exists] 
+/focus [@target,exists] target
 /targetlasttarget
 ]]
 
-local function activateUnit(button, playerName, unit)
-    button:RegisterForClicks("AnyUp")
-    button:SetAttribute("unit", unit)
-    -- Mouse 1
-    if macroDB:Get(playerName,unit,1) then
-      button:SetAttribute("type1", "macro") -- left click causes macro
-      button:SetAttribute("macrotext1", macroDB:Get(playerName,unit,1))
-    elseif unit == "focus" or unit == "target" then
-      button:SetAttribute("type1", "macro") -- left click causes macro
-      button:SetAttribute("macrotext1", swapFocusTarget)
-    else
-      button:SetAttribute("type1", "target")
-    end
-    -- Mouse 2
-    if macroDB:Get(playerName,unit,2) then
-      button:SetAttribute("type2", "macro") -- left click causes macro
-      button:SetAttribute("macrotext2", macroDB:Get(playerName,unit,2))
-    else
-      button:SetAttribute("type2", "togglemenu")
-    end
-    --Shift Mouse 1
-    if unit == "focus" or unit == "target" then
-      button:SetAttribute("shift-type1", "macro") 
-      button:SetAttribute("shift-macrotext1", swapFocusTarget)
-    else
-      button:SetAttribute("shift-type1", "target")
-    end
-    --Shift Mouse 2 
-    button:SetAttribute("shift-type2", "togglemenu")
+local clearMacro = [[
+/cleartarget
+/clearfocus
+]]
 
-    -- Ctrl Mouse 1&2
-    if unit == "focus" then
-      button:SetAttribute("ctrl-type1", "macro") 
-      button:SetAttribute("ctrl-macrotext1", "/clearfocus")
-      button:SetAttribute("ctrl-type2", "togglemenu")
-    elseif unit == "target" or unit == "targettarget" then  
-      button:SetAttribute("ctrl-type1", "macro") 
-      button:SetAttribute("ctrl-macrotext1", "/cleartarget")
-      button:SetAttribute("ctrl-type2", "togglemenu")
-    elseif unit == "pet" then
-      button:SetAttribute("ctrl-type1", "macro") 
-      button:SetAttribute("ctrl-macrotext1", "/cast Dismiss Pet")
-      button:SetAttribute("ctrl-type2", "togglemenu")
-    elseif unit == "player" then
-      button:SetAttribute("ctrl-type1", "macro") 
-      button:SetAttribute("ctrl-macrotext1", [[/cast Revive Pet]])
-      button:SetAttribute("ctrl-type2", "macro") 
-      button:SetAttribute("ctrl-macrotext2", [[/cast Call Pet 1]])
-    end
-    
+local function RightMacros(button, playerName, unit)
+  button:RegisterForClicks("AnyUp")
+  button:SetAttribute("unit", unit)
+  local function addMacro(modifier)
+    button:SetAttribute(modifier.."type1", "macro")
+    button:SetAttribute(modifier.."macrotext1", GetMacro(playerName,unit,string.gsub(modifier, "-", "_").."mouse1"))
+    button:SetAttribute(modifier.."type2", "macro")
+    button:SetAttribute(modifier.."macrotext2", GetMacro(playerName,unit,string.gsub(modifier, "-", "_").."mouse2"))
+  end
+  -- Mouse
+  addMacro("")
+  addMacro("shift-")
+  addMacro("ctrl-")
+  addMacro("alt-")
 end
 
+
+
+local function LeftMacros(button, playerName, unit)
+  button:RegisterForClicks("AnyUp")
+  button:SetAttribute("unit", unit)
+  -- Mouse 1 (TARGET)
+  if unit == "focus" or unit == "target" then
+    button:SetAttribute("type1", "macro") -- left click causes macro
+    button:SetAttribute("macrotext1", swapFocusTarget)
+  else
+    button:SetAttribute("type1", "macro") 
+    button:SetAttribute("macrotext1", "/target "..unit)
+  end
+  -- Mouse 2 (MENU)
+  button:SetAttribute("type2", "togglemenu")
+
+  --Shift Mouse 1 (FOCUS)
+  if unit == "focus" or unit == "target" then
+    button:SetAttribute("shift-type1", "macro") 
+    button:SetAttribute("shift-macrotext1", swapFocusTarget)
+  else
+    button:SetAttribute("shift-type1", "macro") 
+    button:SetAttribute("shift-macrotext1", "/focus "..unit)
+  end
+
+  --Shift Mouse 2 (CLEAR)
+  if unit == "focus" then
+    button:SetAttribute("shift-type2", "macro") 
+    button:SetAttribute("shift-macrotext2", "/clearfocus")
+  elseif unit == "target" or unit == "targettarget" then  
+    button:SetAttribute("shift-type2", "macro") 
+    button:SetAttribute("shift-macrotext2", "/cleartarget")
+  elseif unit == "pet" then
+    button:SetAttribute("shift-type2", "macro") 
+    button:SetAttribute("shift-macrotext2", "/cast Dismiss Pet")
+  elseif unit == "player" then
+    button:SetAttribute("shift-type2", "macro") 
+    button:SetAttribute("shift-macrotext2", clearMacro)
+  end
+
+  --Ctrl Mouse (CALL/REVIVE PET)
+  button:SetAttribute("ctrl-type1", "macro") 
+  button:SetAttribute("ctrl-macrotext1", "/cast call pet 1")
+  button:SetAttribute("ctrl-type2", "macro") 
+  button:SetAttribute("ctrl-macrotext2", "/cast Revive Pet")
+
+  --Ctrl Mouse (CALL/REVIVE PET)
+  button:SetAttribute("alt-type1", "macro") 
+  button:SetAttribute("alt-macrotext1", "/cast call pet 1")
+  button:SetAttribute("alt-type2", "macro") 
+  button:SetAttribute("alt-macrotext2", "/cast Revive Pet")
+end
+
+
 function addButton(frame)
-  local button = NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
-  button:SetAllPoints(frame)
-  activateUnit(button, UnitName("player"), frame.data.unit)
+  local leftButton = NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
+  :Point("LEFT",frame,"LEFT",0,0)
+  :Height(frame:GetHeight())
+  :Width(frame:GetWidth()/2)
+  
+  leftButton:SetScript("OnEnter", function()
+    config.frames.anchor.mouseOver = config.frames.anchor.mouseOver + 1
+    checkActicvity()
+  end )
+
+  leftButton:SetScript("OnLeave", function()
+    config.frames.anchor.mouseOver = config.frames.anchor.mouseOver - 1
+    checkActicvity()
+  end )
+
+  LeftMacros(leftButton, UnitName("player"), frame.data.unit)
+
+  local rightButton = NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
+  :Point("RIGHT",frame,"RIGHT",0,0)
+  :Height(frame:GetHeight())
+  :Width(frame:GetWidth()/2)
+  
+  rightButton:SetScript("OnEnter", function()
+    config.frames.anchor.mouseOver = config.frames.anchor.mouseOver + 1
+    checkActicvity()
+  end )
+
+  rightButton:SetScript("OnLeave", function()
+    config.frames.anchor.mouseOver = config.frames.anchor.mouseOver - 1
+    checkActicvity()
+  end )
+
+  RightMacros(rightButton, UnitName("player"), frame.data.unit)
+
+
 end

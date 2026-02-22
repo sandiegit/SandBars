@@ -34,7 +34,8 @@ config = {
   },
   frames = {
     anchor = {
-      size = {80,55}
+      size = {80,55},
+      mouseOver = 0
     },
     {
       unit = "focus",

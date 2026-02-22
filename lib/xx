@@ -1,0 +1,82 @@
+-- SandBars: User activity
+
+local active = 0
+local timeStamp = GetTimePreciseSec()
+local delay = config.inactiveDelay
+
+function monitorActiity(parent)
+
+  local check
+  check = function()
+    if UnitExists("target") 
+    or InCombatLockdown() 
+    or UnitCastingInfo("player") 
+    or UnitChannelInfo("player") then
+      parent:SafeShow()
+      timeStamp = GetTimePreciseSec()
+      active = 1
+      C_Timer.After(delay + 0.2, check)
+    else
+      if timeStamp + delay < GetTimePreciseSec() then
+        active = 0
+        frame:SafeHide()
+      else
+        --print(wait)
+        active = 1
+        C_Timer.After(1, check)
+      end
+    end
+  end
+
+
+  local width = 0
+  local height = 0
+
+  for i,data in ipairs(config.frames) do
+    local newWidth = config.size[1]*data.scale[1]
+    if newWidth > width then 
+      width = newWidth
+    end
+    local newHeight = config.size[2]*data.scale[2] + data.offset
+    height = height + newHeight
+  end
+
+  print(width,height)
+
+  local frame = NewFrame()
+  :Event("PLAYER_LOGIN")
+  :Event("UNIT_SPELLCAST_START")
+  :Event("UNIT_SPELLCAST_CHANNEL_START")
+  :Event("PLAYER_REGEN_ENABLED" )
+  :Event("PLAYER_REGEN_DISABLED" )
+  :Event("PLAYER_TARGET_CHANGED")
+  :Event("UNIT_SPELLCAST_SUCCEEDED")
+  :Script(function() 
+    if active == 0 then
+      check()
+    end
+  end)
+  :Point("BOTTOM",parent,"TOP",0,0)
+  :Height(height)
+  :Width(width)
+
+  frame:SetScript("OnEnter", function()
+     timeStamp = GetTimePreciseSec()
+     frame:SafeShow()
+    if active == 0 then
+      check()
+    end
+  end )
+
+  frame:SetScript("OnLeave", function()
+     timeStamp = GetTimePreciseSec()
+     frame:SafeShow()
+    if active == 0 then
+      check()
+    end
+  end )
+
+  check()
+
+end
+

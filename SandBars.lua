@@ -5,7 +5,7 @@ local anchor = NewFrame()
 :Width(config.frames.anchor.size[1])
 :Height(config.frames.anchor.size[2])
 :Background({0,0,0,0})
-monitorActiity(anchor)
+config.frames.anchor.frame = anchor
 
 for i,data in ipairs(config.frames) do
   frame = NewFrame(nil,nil,anchor)
