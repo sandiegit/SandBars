@@ -1,6 +1,7 @@
 ## Interface: 120000,120001
 ## Title: SandBars
 ## Notes: A simple addon. 
+## Category: Unit Frames
 ##
 ## Feature List
 ## --------------- 

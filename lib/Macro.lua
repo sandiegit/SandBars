@@ -89,7 +89,7 @@ local function LeftMacros(button, playerName, unit)
   button:SetAttribute("ctrl-type2", "macro") 
   button:SetAttribute("ctrl-macrotext2", "/cast Revive Pet")
 
-  --Ctrl Mouse (CALL/REVIVE PET)
+  --Alt Mouse (CALL/REVIVE PET)
   button:SetAttribute("alt-type1", "macro") 
   button:SetAttribute("alt-macrotext1", "/cast call pet 1")
   button:SetAttribute("alt-type2", "macro") 
@@ -98,19 +98,32 @@ end
 
 
 function addButton(frame)
+  NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
+  :Point("LEFT",frame,"LEFT",config.leftButtonWidth,0)
+  :Height(frame:GetHeight())
+  :Width(2)
+  :Background({1,1,1,0.05})
+  :SetFrameLevel(frame:GetFrameLevel()+10)
+  
+
   local leftButton = NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
   :Point("LEFT",frame,"LEFT",0,0)
   :Height(frame:GetHeight())
-  :Width(frame:GetWidth()/2)
+  :Width(config.leftButtonWidth)
+  :Background({0,0,0,0})
+
+  leftButton:SetFrameLevel(frame:GetFrameLevel()+10)
   
   leftButton:SetScript("OnEnter", function()
     config.frames.anchor.mouseOver = config.frames.anchor.mouseOver + 1
     checkActicvity()
+    leftButton.Background:SetColorTexture(unpack(config.colour.mouseOver))
   end )
 
   leftButton:SetScript("OnLeave", function()
     config.frames.anchor.mouseOver = config.frames.anchor.mouseOver - 1
     checkActicvity()
+    leftButton.Background:SetColorTexture(unpack({0,0,0,0}))
   end )
 
   LeftMacros(leftButton, UnitName("player"), frame.data.unit)
@@ -118,16 +131,21 @@ function addButton(frame)
   local rightButton = NewFrame("Button", nil, frame,"SecureUnitButtonTemplate")
   :Point("RIGHT",frame,"RIGHT",0,0)
   :Height(frame:GetHeight())
-  :Width(frame:GetWidth()/2)
+  :Width(frame:GetWidth()-config.leftButtonWidth)
+  :Background({0,0,0,0})
+
+  rightButton:SetFrameLevel(frame:GetFrameLevel()+10)
   
   rightButton:SetScript("OnEnter", function()
     config.frames.anchor.mouseOver = config.frames.anchor.mouseOver + 1
     checkActicvity()
+    rightButton.Background:SetColorTexture(unpack(config.colour.mouseOver))
   end )
 
   rightButton:SetScript("OnLeave", function()
     config.frames.anchor.mouseOver = config.frames.anchor.mouseOver - 1
     checkActicvity()
+    rightButton.Background:SetColorTexture(unpack({1,1,1,0.0}))
   end )
 
   RightMacros(rightButton, UnitName("player"), frame.data.unit)
