@@ -1,8 +1,9 @@
 config = {
   inactiveDelay = 10,
-  size = { 220, 35},
+  size = { 200, 35},
   raidIconOffset = -3,
   raidIconScale = 0.8,
+  leftButtonWidth = 20,
   texture = {
     default = "Interface\\TARGETINGFRAME\\UI-StatusBar",
     raid = "Interface\\TargetingFrame\\UI-RaidTargetingIcons",
@@ -15,7 +16,8 @@ config = {
     defaultSize = 12
   },
   colour = { 
-    background = {0.0, 0.0, 0.0, 0.6},
+    mouseOver = {1,1,0.5,0.05},
+    background = {0.0, 0.0, 0.0, 0.4},
     danger = {1.0, 0.0, 0.0, 1.0},
     unit = {
       help =    { 0.0, 0.5, 0.0, 1.0},
@@ -41,14 +43,14 @@ config = {
       unit = "focus",
       type = "health",
       offset = 0,
-      scale = {1.0, 0.5},
+      scale = {1.0, 0.3},
       fontSize = 10,
     },
     {
       unit = "pet",
       type = "health",
       offset = 0,
-      scale = {1.0, 0.5},
+      scale = {1.0, 0.3},
       fontSize = 10,
     },
     {
@@ -56,13 +58,13 @@ config = {
       type = "health",
       offset = 0,
       scale = {1.0, 1.0},
-      fontSize = 12,
+      fontSize = 14,
     },
     {
       unit = "player",
       type = "power",
       offset = 0,
-      scale = {1.0, 0.5},
+      scale = {1.0, 0.3},
       secondHeight = 2,
     },
     {
@@ -80,7 +82,7 @@ config = {
       unit = "targettarget",
       type = "health",
       offset = 0,
-      scale = {1.0, 0.5},
+      scale = {1.0, 0.4},
       fontSize = 12,
       alpha = 0.5
     },
@@ -88,14 +90,14 @@ config = {
       unit = "target",
       type = "health",
       offset = 0,
-      scale = {1.0, 1.4},
+      scale = {1.0, 1.3},
       fontSize = 12,
     },
     {
       unit = "target",
       type = "cast",
       offset = 0,
-      scale = {1.0, 0.3},
+      scale = {1.0, 0.6},
       bgColour = {1,1,0,0.2},
       colour = {1,0.3,0.3,0.9},
       fontColour = {1,1,1},
