@@ -42,7 +42,7 @@ macroDB.Ghowler = {
 macroDB.Sandina = {
   target = {
     mouse1 = [[
-/castsequence reset=600 [nocombat]Mark of the wild,nil
+/castsequence reset=120 [nocombat]Mark of the wild,nil
 /castsequence [nostance:4]Moonkin Form
 /castsequence [harm]reset=target Wrath, Wrath, Single-Button Assistant
 /castsequence [noharm,nodead]reset=target Regrowth, Rejuvenation
