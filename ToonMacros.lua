@@ -4,6 +4,8 @@ macroDB.Ghowler = {
   target = {
     mouse1 = [[
       /castsequence [combat,@pet,dead] Revive Pet; [combat] reset=target Hunter's Mark, Concussive Shot, Single-Button Assistant
+      /cast trick
+      /petattack
     ]],
     mouse2 = [[
       /stopcasting
@@ -40,7 +42,10 @@ macroDB.Ghowler = {
 macroDB.Sandina = {
   target = {
     mouse1 = [[
-/castsequence reset=target [harm] Wrath, Wrath, Single-Button Assistant; Regrowth, Rejuvenation
+/castsequence reset=600 [nocombat]Mark of the wild,nil
+/castsequence [nostance:4]Moonkin Form
+/castsequence [harm]reset=target Wrath, Wrath, Single-Button Assistant
+/castsequence [noharm,nodead]reset=target Regrowth, Rejuvenation
     ]],
     mouse2 = [[
 /stopcasting
@@ -50,11 +55,12 @@ macroDB.Sandina = {
   player = {
     mouse1 = [[
 /cast Barkskin
-/cast Regrowth
+/castsequence Regrowth, Rejuvenation
     ]],
     mouse2 = [[
 /stopcasting
 /cast [harm,combat] Shadowmeld; [nocombat] Travel Form
+/castsequence reset=45 Tiger Dash, Stampeding Roar
     ]]
   }
 }

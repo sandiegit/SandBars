@@ -42,6 +42,12 @@ function addPowerBar(frame)
     end
   end)
 
+  --ewFrame(nil,nil,frame)
+  :Height(frame:GetHeight())
+  :Width(frame:GetWidth())
+  :Point("BOTTOM", frame, "BOTTOM", 0,0)
+  :Background(config.colour.background)
+
   frame.bar = {}
   frame.bar[1] = NewFrame("StatusBar", nil,  frame)
   :Height(frame:GetHeight()-frame.data.secondHeight)
